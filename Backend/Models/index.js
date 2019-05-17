@@ -1,0 +1,9 @@
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cargiver',{
+    useNewUrlParser:true
+});
+
+module.exports.Comments = require('./commentsModel');
+module.exports.Post = require('./postModel');
+module.exports.User = require('./userModel');
+module.exports.Ratings = require('./ratingModel');
