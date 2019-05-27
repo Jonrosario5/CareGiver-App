@@ -25,4 +25,4 @@ db.User.deleteMany({}, (err,user)=>{
             console.log(`"Could not create user:${err}"`)
         } console.log("user created!")
     })
-})
+});
