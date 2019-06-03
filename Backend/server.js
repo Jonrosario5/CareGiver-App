@@ -73,19 +73,19 @@ app.get('/api/nameSearch/:query',(request,response)=>{
 
 // Fine Users by UserCerts
 
-app.get('/api/user/certs/:certs',(request,response)=>{
-    let certs = request.params;
-    console.log(certs)
-    db.User.find({userCerts:certs},(err,foundUsers)=>{
-        if(err || !foundUsers){
-            console.log(`Error Retrieving User:${err}`);
-            response.send("Sorry, No Current Users Have Those Certificates")
-        }else{
-            console.log(`Found Users: ${foundUsers}`)
-            response.json(foundUsers);
-        }
-    })
-});
+// app.get('/api/certs/:certs',(request,response)=>{
+//     let certs = request.params.certs;
+//     console.log(certs)
+//     db.User.find({userCerts:},(err,foundUsers)=>{
+//         if(err || !foundUsers){
+//             console.log(`Error Retrieving User:${err}`);
+//             response.send("Sorry, No Current Users Have Those Certificates")
+//         }else{
+//             console.log(`Found Users: ${foundUsers}`)
+//             response.json(foundUsers);
+//         }
+//     })
+// });
 
 // Edit User
 
