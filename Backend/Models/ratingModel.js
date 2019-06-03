@@ -3,10 +3,33 @@ const Schema = mongoose.Schema;
 
 const RatingSchema = new Schema({
     rateValue:Number,
-    comments:{
+    rater:{
         type:Schema.Types.ObjectId,
-        ref:"Comments"
-    }
+        ref:"User"
+    },
+    ratee:{
+            type:Schema.Types.ObjectId,
+            ref:"User"
+        },
+    post:{
+        type:Schema.Types.ObjectId,
+        ref:"Post"
+
+    },
+    initialComment:{
+        type:String,
+        isLiked:{
+        type:Boolean,
+        default:false
+        }
+    },
+    comments:[{
+        body:String,
+        isLiked:{
+        type:Boolean,
+        default:false
+        }
+        }]
 })
 
 const Ratings = mongoose.model('Ratings',RatingSchema);

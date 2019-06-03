@@ -16,6 +16,24 @@ const newUser = {
     }
 };
 
+const user2 = {
+    userName:"Walrus",
+    fullName:"Matt Fredman",
+    userEmail:"Matt@gmail.com",
+    userPassword:"red",
+    userType:"Admin",
+    patientDetails:{
+        patientName:"Patty Jenkins",
+        patientAilments:"Diabetes",
+        patientAge:98,
+        patienInsurance:"Kaiser",
+        patientCareDetails:"Needs a bath 2x/day, and lots of attention",
+        location:"San Francisco"
+    }
+};
+
+
+
 db.User.deleteMany({}, (err,user)=>{
     if (err){
         console.log(`"User not created:${err}"`);
@@ -24,5 +42,10 @@ db.User.deleteMany({}, (err,user)=>{
         if(err){
             console.log(`"Could not create user:${err}"`)
         } console.log("user created!")
+    })
+    db.User.create(user2,(err,user)=>{
+        if(err){
+            console.log(`"Could not create user:${err}"`)
+        } console.log("user2 created!")
     })
 });

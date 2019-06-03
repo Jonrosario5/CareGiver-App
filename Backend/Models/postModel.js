@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
-    consumerId:{
+    userId:{
         type:Schema.Types.ObjectId,
         ref:"User"
     },
-    ifFilled: {
+    isFilled: {
         type:Boolean,
         default:false
     },
@@ -19,9 +19,9 @@ const PostSchema = new Schema({
         default:Date.now
     },
     postedRate:String,
-    Comments:[{
-        type:Schema.Types.ObjectId,
-        ref:"Comments"
+    details:String,
+    comments:[{
+        body:String,
     }]
     
 })

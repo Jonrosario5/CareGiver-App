@@ -42,6 +42,10 @@ const ConsumerSchema = new Schema({
     userResume:{
         // Need to convert to a PDF uploader 
         type:String
+    },
+    coUser:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
     }
 });
 
