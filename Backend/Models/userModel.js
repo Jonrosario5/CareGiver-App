@@ -37,16 +37,16 @@ const ConsumerSchema = new Schema({
     },
     userCerts:[{
         // Need to add a string value in conjunction with boolean value
-        type:String
+        certification:String
     }],
     userResume:{
         // Need to convert to a PDF uploader 
         type:String
     },
-    coUser:{
+    coUser:[{
         type:Schema.Types.ObjectId,
         ref:"User"
-    }
+    }]
 });
 
 // backup method to delete password from the database result

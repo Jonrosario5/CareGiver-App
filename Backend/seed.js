@@ -13,7 +13,13 @@ const newUser = {
         patienInsurance:"Kaiser",
         patientCareDetails:"Needs a bath 2x/day, and lots of attention",
         location:"San Francisco"
-    }
+    },
+    userResume:"Cake",
+    userCerts:[
+        {certification:"Testing"}
+        ,{certification:"Caring"}
+        ,{certification:"Tubing"}
+    ]
 };
 
 const user2 = {

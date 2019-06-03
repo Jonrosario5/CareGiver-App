@@ -6,6 +6,7 @@ const PostSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
+    header:String,
     isFilled: {
         type:Boolean,
         default:false

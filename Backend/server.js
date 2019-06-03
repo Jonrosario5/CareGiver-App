@@ -35,6 +35,58 @@ app.post('/api/newuser',(request,response)=>{
     db.User.create()
 })
 
+// Find a User by id  
+
+app.get('/api/user/:id',(request,response)=>{
+    let userId = request.params.id;
+    db.User.findById({_id:userId},(err,foundUser)=>{
+        if(err){
+            return console.log(`Error Retrieving User:${err}`)
+        }
+        console.log(`Found User:${foundUser}`)
+        response.json(foundUser);
+    })
+})
+
+// Find User by Name
+
+app.get('/api/nameSearch/:query',(request,response)=>{
+    let name = request.params.query;  
+    console.log(name);
+    db.User.findOne({
+        $or:[
+            {userName:name},
+            {fullName:name},
+            {userEmail:name}
+        ]
+    },(err,foundUser)=>{
+        if(err || !foundUser ){
+            console.log(`Error Retrieving User:${err}`)
+            response.send("That User Does Not Exist")
+        }else{
+            console.log(`Found User:${foundUser}`)
+            response.json(foundUser);  
+        }
+
+    })
+})
+
+// Fine Users by UserCerts
+
+app.get('/api/user/certs/:certs',(request,response)=>{
+    let certs = request.params;
+    console.log(certs)
+    db.User.find({userCerts:certs},(err,foundUsers)=>{
+        if(err || !foundUsers){
+            console.log(`Error Retrieving User:${err}`);
+            response.send("Sorry, No Current Users Have Those Certificates")
+        }else{
+            console.log(`Found Users: ${foundUsers}`)
+            response.json(foundUsers);
+        }
+    })
+});
+
 // Edit User
 
 app.put('/api/editProfile/:id',(request,response)=>{
@@ -50,9 +102,19 @@ app.put('/api/editProfile/:id',(request,response)=>{
         })
 })
 
-// Delete A User Coming 
+// Delete User  
 
-// Find a User 
+app.delete('/api/removeUser/:id',(request,response)=>{
+    let userId = request.params.id;
+    db.User.findByIdAndDelete({_id: userId },(err,deletedUser)=>{
+        if(err){
+            return console.log(`user not deleted:${err}`)
+        }
+        console.log(`User Removed: ${deletedUser}`);
+        response.json(deletedUser);
+    })
+})
+
 
 // ********* POST ROUTES ********* 
 
@@ -90,16 +152,37 @@ app.post('/api/:id/postCreate',(request,response)=>{
     response.json("Done");
 })
 
+// Update a Post
 
-// ***** Comments 
+
+// Delete a Post 
 
 
 
 // ******* RATINGS ROUTES
 
-app.post('/api/createRating',(request,response)=>{
-    console.log("Hi")
+// Get All Ratings
+
+app.get('/api/ratings', (request, response)=> {
+    db.Ratings.find().exec((err,ratings)=>{
+        if(err){
+            throw err;
+        }
+        console.log(ratings);
+        response.json(ratings);
+    })
 })
+
+//  Create a Rating 
+
+
+// Update a Rating 
+
+
+// Delete a Rating 
+
+
+
 
 
 // Start Server
