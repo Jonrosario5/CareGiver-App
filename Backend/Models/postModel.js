@@ -20,10 +20,6 @@ const PostSchema = new Schema({
     },
     postedRate:String,
     details:String,
-    comments:[{
-        body:String,
-    }]
-    
 })
 
 const Post = mongoose.model('Post',PostSchema);

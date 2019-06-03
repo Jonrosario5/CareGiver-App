@@ -91,10 +91,14 @@ app.post('/api/:id/postCreate',(request,response)=>{
 })
 
 
+// ***** Comments 
+
+
+
 // ******* RATINGS ROUTES
 
 app.post('/api/createRating',(request,response)=>{
-    
+    console.log("Hi")
 })
 
 
