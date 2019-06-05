@@ -17,7 +17,7 @@ const RatingSchema = new Schema({
 
     },
     initialComment:{
-        type:String,
+        body:String,
         isLiked:{
         type:Boolean,
         default:false

@@ -154,9 +154,34 @@ app.post('/api/:id/postCreate',(request,response)=>{
 
 // Update a Post
 
+app.put('/api/editPost/:id',(request,response)=>{
+    const postId = request.params.id;
+    db.Post.findOneAndUpdate({_id:postId},
+        request.body,
+        {new:true},
+        (err, updatedPost)=> {
+            if(err){
+                return console.log(`This error has ocurred:${err}`)
+            }
+            response.json(updatedPost);
+        })
+})
 
 // Delete a Post 
 
+app.delete('/api/removePost/:id',(request,response)=>{
+    const postId = request.params.id;
+    db.Post.findByIdAndDelete({_id:postId},(err,deletedPost)=>{
+        if(err){
+            console.log(`Error Removing Post:${deletedPost}`)
+            response.send("Error Deleting Post")
+        }else {
+            response.json(deletedPost);
+            console.log(`Post Removed:${deletedPost}`)
+        }
+
+    })
+})
 
 
 // ******* RATINGS ROUTES
@@ -164,7 +189,8 @@ app.post('/api/:id/postCreate',(request,response)=>{
 // Get All Ratings
 
 app.get('/api/ratings', (request, response)=> {
-    db.Ratings.find().exec((err,ratings)=>{
+    db.Ratings.find().populate('post')
+    .exec((err,ratings)=>{
         if(err){
             throw err;
         }
@@ -175,13 +201,68 @@ app.get('/api/ratings', (request, response)=> {
 
 //  Create a Rating 
 
+app.post('/api/createRating',(request,response)=>{
+    console.log(request.body.initialComment)
+    const newRatings = new db.Ratings({
+        rateValue:request.body.rateValue,
+        rater:request.body.rater,
+        ratee:request.body.ratee,
+        post:request.body.post,
+        initialComment:{
+            body:request.body.initialComment,
+            isLiked:false
+        },
+        comments:[]
+    })
+    db.Ratings.create(newRatings,(err,newRatings)=>{
+        if(err){
+            console.log(`Error Creating Rating:${newRatings}`)
+            response.send(`Error Creating Rating${err.message}`)
+        }else {
+            console.log(`New Rating Created:${newRatings}`);
+            response.json(newRatings)
+        }
+    })
+})
 
-// Update a Rating 
+// Add Comment to Rating 
 
+app.put('/api/addComments/:postId/:commentId',(request,response)=>{
+    let newComment = request.body.comment;
+    let commentId = request.params.commentId
+    db.Ratings.findOne({_id:request.params.id},(err,foundRating)=>{
+        if(err){
+            console.log(`Error Occurred:${err}`)
+            response.send('Error Creating New Comment')
+        } 
+        let comments = foundRating.comments
+        if(!commentId){
+            comments.push(newComment)
+        } else {
+            for(i = 0;i < comments.length;i++){
+                if(comments[i]._id === commentId){
+                    comments[i] === newComment
+                }
+            }
+        }
+});
+});
 
 // Delete a Rating 
 
+app.delete('/api/removeRating/:id',(request,response)=>{
+    const postId = request.params.id;
+    db.Ratings.findByIdAndDelete({_id:postId},(err,deletedRatings)=>{
+        if(err){
+            console.log(`Error Removing Rating:${deletedRatings}`)
+            response.send("Error Deleting Rating")
+        }else {
+            response.json(deletedRatings);
+            console.log(`Post Removed:${deletedRatings}`)
+        }
 
+    })
+})
 
 
 

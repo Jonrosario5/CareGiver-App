@@ -27,14 +27,7 @@ const ConsumerSchema = new Schema({
     userSchedule:[{
         type:Date
     }],
-    patientDetails:{
-        patientName:String,
-        patientAilments:String,
-        patientAge:Number,
-        patientInsurance:String,
-        patientCareDetails:String,
-        location:String
-    },
+    
     userCerts:[{
         // Need to add a string value in conjunction with boolean value
         certification:String
@@ -43,10 +36,7 @@ const ConsumerSchema = new Schema({
         // Need to convert to a PDF uploader 
         type:String
     },
-    coUser:[{
-        type:Schema.Types.ObjectId,
-        ref:"User"
-    }]
+
 });
 
 // backup method to delete password from the database result
