@@ -3,16 +3,35 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const db = require('./Models');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const userRoutes = require('./Routes/user');
+
+
 
 
 
 // Middleware
-app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(express.json())
+app.use(bodyParser.json());
+
+app.use(cors());
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+app.use('/user', userRoutes);
+
+
+app.use(express.static('public'));
+
 
 // ************* USER ROUTES ************
 
@@ -27,13 +46,6 @@ app.get('/api/allusers', (request, response)=> {
     })
 })
 
-
-
-// Create User
-
-app.post('/api/newuser',(request,response)=>{
-    db.User.create()
-})
 
 // Find a User by id  
 
@@ -86,34 +98,6 @@ app.get('/api/nameSearch/:query',(request,response)=>{
 //         }
 //     })
 // });
-
-// Edit User
-
-app.put('/api/editProfile/:id',(request,response)=>{
-    const userId = request.params.id;
-    db.User.findOneAndUpdate({_id:userId},
-        request.body,
-        {new:true},
-        (err, updatedUser)=> {
-            if(err){
-                return console.log(`This error has ocurred:${err}`)
-            }
-            response.json(updatedUser);
-        })
-})
-
-// Delete User  
-
-app.delete('/api/removeUser/:id',(request,response)=>{
-    let userId = request.params.id;
-    db.User.findByIdAndDelete({_id: userId },(err,deletedUser)=>{
-        if(err){
-            return console.log(`user not deleted:${err}`)
-        }
-        console.log(`User Removed: ${deletedUser}`);
-        response.json(deletedUser);
-    })
-})
 
 
 // ********* POST ROUTES ********* 
@@ -225,28 +209,25 @@ app.post('/api/createRating',(request,response)=>{
     })
 })
 
-// Add Comment to Rating 
+// Add Comment to Rating
 
-app.put('/api/addComments/:postId/:commentId',(request,response)=>{
-    let newComment = request.body.comment;
-    let commentId = request.params.commentId
-    db.Ratings.findOne({_id:request.params.id},(err,foundRating)=>{
+app.put('/api/editRating/:id',(request,response)=>{
+    let newComments = request.body.comments[0]
+    
+    db.Ratings.findById({_id:request.params.id},(err,foundPost)=>{
         if(err){
-            console.log(`Error Occurred:${err}`)
-            response.send('Error Creating New Comment')
-        } 
-        let comments = foundRating.comments
-        if(!commentId){
-            comments.push(newComment)
-        } else {
-            for(i = 0;i < comments.length;i++){
-                if(comments[i]._id === commentId){
-                    comments[i] === newComment
-                }
-            }
+            console.log(err)
         }
-});
-});
+        foundPost.comments.push(newComments);
+        foundPost.save((err,updatedPost)=>{
+            if(err){
+                console.log(`Updating Comment Err:${err}`)
+            }
+            response.json(updatedPost)
+        })
+    })
+})
+
 
 // Delete a Rating 
 
