@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(cors());
+
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -82,23 +83,6 @@ app.get('/api/nameSearch/:query',(request,response)=>{
 
     })
 })
-
-// Fine Users by UserCerts
-
-// app.get('/api/certs/:certs',(request,response)=>{
-//     let certs = request.params.certs;
-//     console.log(certs)
-//     db.User.find({userCerts:},(err,foundUsers)=>{
-//         if(err || !foundUsers){
-//             console.log(`Error Retrieving User:${err}`);
-//             response.send("Sorry, No Current Users Have Those Certificates")
-//         }else{
-//             console.log(`Found Users: ${foundUsers}`)
-//             response.json(foundUsers);
-//         }
-//     })
-// });
-
 
 // ********* POST ROUTES ********* 
 

@@ -60,16 +60,19 @@ module.exports = {
             })
     },
 
-    addComment: (request,response) =>{
-
-    },
-
-    deleteComment: (request,response) => {
-
-    },
-
     deletePost: (request,response) =>{
+            const postId = request.params.id;
+            db.Post.findByIdAndDelete({_id:postId},(err,deletedPost)=>{
+                if(err){
+                    console.log(`Error Removing Post:${deletedPost}`)
+                    response.send("Error Deleting Post")
+                }else {
+                    response.json(deletedPost);
+                    console.log(`Post Removed:${deletedPost}`)
+                }
         
+            })
+
     }
 
 }
